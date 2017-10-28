@@ -216,3 +216,29 @@ with tf.Session() as sess:
         "size_factor=", sess.run(tf_size_factor),
         "price_offset=", sess.run(tf_price_offset)), '\n'
 # cuando terminemos el bucle se muestra el costo final,  el ultimo factor de tamaño, y el ultimo price_offset
+
+# trazamos los datos de entrenamiento, pruebas
+
+    # diagrama de entrenamiento y datos de prueba, y regresión aprendida
+
+    # obtener valores utilizados para normalizar los datos de modo que podamos desnormalizar los datos a su
+    # escala original
+    train_house_size_mean = train_house_size.mean()
+    train_house_size_std = train_house_size.std()
+
+    train_price_mean = train_price.mean()
+    train_price_std = train_price.std()
+
+    # trazar el gráfico
+    plt.rcParams["figure.figsize"] = (10, 8)
+    plt.figure()
+    plt.ylabel("Precio")
+    plt.xlabel("Tamaño (sq.ft)")
+    plt.plot(train_house_size, train_price, 'go', label = "Datos de entrenamiento")
+    plt.plot(test_house_size, test_house_price, 'mo', label = "Data de prueba")
+    plt.plot(train_house_size_norm * train_house_size_std + train_house_size_mean,
+        (sess.run(tf_size_factor) * train_house_size_norm + sess.run(tf_price_offset))
+        * train_price_std + train_price_mean, label="Regresion Aprendida")
+
+    plt.legend(loc='upper left')
+    plt.show()
