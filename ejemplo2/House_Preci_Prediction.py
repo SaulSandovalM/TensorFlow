@@ -242,3 +242,96 @@ with tf.Session() as sess:
 
     plt.legend(loc='upper left')
     plt.show()
+
+# Hemos trabajado con tensores pero no completamente descrito, repasemos la definicion de un tensor. Como
+# dijimos antes un tensor es una matriz n-dimencional de datosy cada tensor tiene tres propiedades definitorias
+# que son Rango, forma y tipo de datos, y es importante que entendamos estas propiedades, porque cuando se
+# utilizan las operacion, porque cuando se utilizan las operaciones, usted deben asegurar sus datos en un
+# tensro, es compatible a traves de estas propiedades, si no, la operacion fallara, o peor aun, completar
+# y producir un tensor que no esperaba, echemos un vistazo a cada una de estas propiedades.
+# 1.- Primero es el Rango: Este es el numero de dimenciones de un tensor, hablemos de las dimenciones. Ahora
+# vamos a formalizar ese conocimiento, si el rango es cero, el tensor es un valor unico, un escalar, si el rango
+# es uno el tensor es una lista de valores, un vector. Si el rango es dos, tengo una matriz con filas que contienen
+# vectores, Si el rango es tres, tenemos una matriz vectorial como se muestra que es un cubo de datos cuando
+# usted ve a tres o mas dimenciones usted puede apenas llamarlo n-tensor, donde n es el grado, y lo dejare a usted
+# para averiguar como representar los datos.
+
+# Ejemplo:
+# Rango     Descripcion     Ejemplo
+# 0         Scalar          s = 145
+# 1         Vactor          v = [1, 3, 2, 5, 7]
+# 2         Matriz          c = [ [[1,5,6], [5,3,4]], [[9,3,4], [3,4,9]] ]
+# 3         3-Tensor(cube)  c = [[[1,5,6], [5,3,4]],[[9,3,5],[3,4,9]], [[4,3,2],[3,6,7]]]
+
+# La propiedad siguiente es la forma. La forma es como se ve la informacion en el tensor en cualquier momento,
+# este relacionado con el rango peor esta basado en el arreglo de datos en el tensor. Veamos algunos ejemplos
+# para tener esto mas claro, un escala tiene un forma vacia, como se infica en los corchetes vacios, y un rango de
+# 0, ya que tiene un solo valor como el vecto r el rango es uno, y tenemos una lista de valores, y la forma es el
+# numero de valores de la lista. En este ejemplo, el tensor tiene cinco valores, asi que la forma es 5. Con un
+# rango de 2 tenemos una matriz que tiene filas de vectores. En este ejemplo tenemos dos filas de vectores y 3
+# valores en cada vector, asi que la forma es de 2,3. Con el rango 3 tenemos un cubo, y para este ejemplo, la forma
+# es 3,2,3, bien, hemos hablado de la forma de datos, pero ¿que tipo pueden ser estos datos?
+
+# Forma
+# Forma de la data en el tensor. Relacionado al rango.
+
+# Rango     Descripcion     Ejemplo                                                             Forma
+# 0         escalar         s = 145                                                             []
+# 1         vector          v = [1,3,2,5,7]                                                     [5]
+# 2         matriz          m = [[1,5,6], [5,3,4]]                                              [2,3]
+# 3         3-tensor(cubo)  c = [ [[1,5,6],[5,3,4]], [[9,3,5],[3,4,9]], [[4,3,2],[3,6,7]] ]     [3,2,3]
+
+# Aqui esta la lista actual de tipos de datos que tensorflow soporta
+# float32, float64
+# int8, int16, int32, int64
+# uint8, uint16
+# string
+# bool
+# complex64, complex128
+# qint8, qint16, quint8
+
+# Vemos los tipos esperados, tenemos varios tamaños de numeros de punto flotante, enteros y entereson sin signo.
+# Tambien tenemos cadena y booleano, incluso tenemos numero complejosy tambien tenemos numero cuantificados
+# firmados y no firmados, si no estas familiarizado con la cuantificacion y numeros cuantificados, estos son los
+# numeros que se han escalado para encajar en representaciones mas pequeñas por lo que ocupan menos bits, esta
+# reduccion de tamañao  permite a TensorFlow para procesar mas rapido, a veces mucho mas rapido, en algunos casos
+# esto puede disminuir el tiempo de procesamiento por el 75% o mas, y es otra caracteristica que nos permite
+# escalar hasta tensorflow rendimiento de nivel de produccion, como un aparte, google has ido tan lejos como para
+# construir plaas procesadoras especiales y chips llamados TPU. Para unidades de procesamiento TensorFlow que
+# utiliza numeros cuantificados para mejorar el rendimiento, ahora conoce las propiedades basicas de los tensores
+# en tensorflow, pos supuesto con cualquier buena bliblioteca, tensorflow tiene muchos metodos para permitirle
+# trabajar con estas propiedades estos son algunos de los metodos mas utilizados,
+
+# Metodos:
+# get_shape() - returns shape
+# reshape() - changes shape
+# rank - returns rank
+# dtype - return data type
+# cast - changes data type
+
+# como ves hay metodos que recuperan y alteran las formas de los tipos de datos, estos metodos son muy utiles y
+# tendremos oportunidades para usarlos a lo largo de este curso, como recordamos, los valores de los tensores
+# son lo que entrenamos cuando optimizamos nuestro modelo.
+
+
+# En nuestro codigo anterior, utilizamos el descenso en gradiente como un optimizador, en el aprendizaje automatico
+# el descenso gradual es una familia popular de metodos para ajustar los valores para reducir el error,
+# conceptualmente, se puede pensar en el proceso de aptimiazcion como tratando de encontrar el camino mas empinado
+# por una colina. Es decir, encontrar la direccion, que da el cambio mas rapido, comienza en algun punto x y
+# calculas los parametros, que proporsiona el camino mas rapido por la colina, que es la reduccion mas rapida en
+# la perdida. Toma un paso de tamaño fijo especifico por la tasa de aprendizaje en esa direccion. Desde el punto
+# nuevo, se calcula un nuevo conjunto de parametros, que otra ves proporciona la direccion de la pendiente marcadores
+# rapida. Esa es la reduccion mas rapida en la perdida y toma el proximo paso de tamaño fijo en la nueva direccion
+# repite esto una y otra vez, en algun momento se llega a un minimo, y cuando ustedtoma medidas adicionales el
+# valor de perdida ya no disminuye, alemnos asi es como deberia funcionar, si ajusta la tasa de aprendizaje
+# demaciado alta, usted puede terminar rebotando alrededor con valores de perdida subiendo y bajando como si estubiese
+# saltanto de un lado a otro de la gradiente, para evitar esto no ajustamos las tasa de aprendizaje demaciado alta
+# Si estas familiarizado con el calculo, el calculo es la direccion de estos pasos, se determina calculando
+# las derivadas de del modelo con respecto a sus caracteristicas, optimizadores basados en descenso de pendientes
+# son un metodos frecuentemente usado para minimizar la perdida, y algo que veremos en futuros modelos de TensorFlow
+# por lo tanto es importante que aprendamos como funciona, para entender mejor esto vamos a modificar el codigo
+
+
+# Podemos ver el efecto del optimizador de pendiente de gradiente en accion en nuestro codigo, solo tenemos que hacer
+# algunos pequeños cambios en nuestro codigo y añadir animacion con la linea de regresion ajustada. Añadimos
+# variables en python para definir el numero de pasos,   
